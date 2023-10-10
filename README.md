@@ -12,4 +12,4 @@ A repository for the automated deployment of Apache redirectors for high availab
 
 ## References:
 
-- [Packer and Terraform])(https://developer.hashicorp.com/terraform/tutorials/provision/packer)
+- [Packer and Terraform](https://developer.hashicorp.com/terraform/tutorials/provision/packer)
