@@ -5,6 +5,7 @@ A repository for the automated deployment of Apache redirectors for high availab
 **TO DO:**
 
 - [ ] Create a sick logo
+- [ ] Add Let's Encrypt functionality
 - [ ] Add documentation
 - [ ] Write blog
 - [ ] Test scripts on AWS
