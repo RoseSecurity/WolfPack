@@ -15,3 +15,8 @@ variable "environment_tag" {
 variable "region" {
   description = "The region Terraform deploys your instance"
 }
+
+variable "ami_id" {
+  description = "ID of the AMI instance you deploy"
+  default     = ""
+}

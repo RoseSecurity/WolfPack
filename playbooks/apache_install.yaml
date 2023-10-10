@@ -1,0 +1,28 @@
+- hosts: default
+  become: true
+
+  tasks:
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+
+    - name: Add index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <h1>WolfPack</h1>
+
+    - name: Add .htaccess
+      copy:
+        dest: /var/www/.htaccess
+        content: |
+          # .htaccess Start
+          RewriteEngine On
+          RewriteCond %{REQUEST_METHOD} ^(GET|POST) [NC]
+          RewriteCond %{REQUEST_URI} ^/api/v1/2023/(.*)$
+          RewriteCond %{HTTP_USER_AGENT} "Mozilla/5.0 \(Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/113.0.0.0 Safari/537.36"
+
+          # Rule for matching to redirect
+          RewriteRule ^.*$ "https://10.8.0.2%{REQUEST_URI}" [P,L]

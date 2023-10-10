@@ -30,7 +30,13 @@ source "amazon-ebs" "redirector" {
 build {
   sources = ["source.amazon-ebs.redirector"]
 
+  provisioner "ansible" {
+    playbook = "../playbooks/apache_install.yaml"
+  }
   provisioner "shell" {
     script = "../scripts/apache_redirector.sh"
+  }
+  provisioner "ansible" {
+    playbook = "../playbooks/apache_start.yaml"
   }
 }
