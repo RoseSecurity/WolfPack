@@ -2,7 +2,10 @@
 
 # Script to stand up infrastructure
 
-echo "ami_id = \"$(packer build -machine-readable images/redirector.pkr.hcl | awk -F, '$0 ~/artifact,0,id/ {print $6}')\"" > terraform.tfvars
+# Install plugins
+packer init images/redirector/
+
+echo "ami_id = \"$(packer build -machine-readable images/redirector/redirector.pkr.hcl | awk -F, '$0 ~/artifact,0,id/ {print $6}')\"" > terraform.tfvars
 
 terraform init 
 terraform apply -auto-approve
