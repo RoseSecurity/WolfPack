@@ -4,7 +4,12 @@ set -x
 
 # Install necessary dependencies
 sudo apt-get update -y
-sudo apt-get -y -qq install curl wget git vim apt-transport-https ca-certificates
+sudo apt-get -y -qq install curl wget git vim apt-transport-https ca-certificates software-properties-common
+
+# Add Ansible repository
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install -y ansible
 
 # Setup sudo to allow no-password sudo for "operators" group and adding "operator" user
 sudo groupadd -r operators

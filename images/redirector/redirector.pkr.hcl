@@ -1,22 +1,15 @@
-packer {
-  required_plugins {
-    amazon = {
-      source  = "github.com/hashicorp/amazon"
-      version = "~> 1"
-    }
-    ansible = {
-      source  = "github.com/hashicorp/ansible"
-      version = "~> 1.1.0"
-    }
-  }
-}
-
 # Build an Apache redirector
 source "amazon-ebs" "redirector" {
   ami_name      = "apache-redirector"
-  instance_type = "t2.micro"
+  instance_type = "t3.nano"
   region        = "us-east-1"
   ssh_username  = "ubuntu"
+  vpc_id = "vpc-0b2459d2135088fb6"
+  subnet_id = "subnet-0b6f6fba869bd8e31"
+  ssh_agent_auth = false
+  temporary_key_pair_type = "ed25519"
+  associate_public_ip_address = true
+  user_data_file = "../../scripts/user_data.sh"
 
   # AMI details
   source_ami_filter {
@@ -36,20 +29,24 @@ source "amazon-ebs" "redirector" {
     volume_size           = 32
     volume_type           = "gp2"
     delete_on_termination = true
+
   }
 
-  vpc_filter {
-    filters = {
-      "isDefault" : "false",
-    }
-  }
+  #vpc_filter {
+    #filters = {
+      #"isDefault" : "false",
+    #}
+  #}
 
-  subnet_filter {
-    filters = {
-      "state" : "available"
-    }
-    most_free = true
-    random    = false
+ # subnet_filter {
+  #  filters = {
+   #   "state" : "available"
+    #}
+    #most_free = true
+    #random    = false
+  #}
+  tags = {
+    Name = "Redirector"
   }
 }
 
@@ -58,13 +55,13 @@ build {
     "source.amazon-ebs.redirector"
   ]
 
-  provisioner "ansible" {
+  provisioner "ansible-local" {
     playbook_file = "../../playbooks/apache_install.yaml"
   }
   provisioner "shell" {
     script = "../../scripts/apache_redirector.sh"
   }
-  provisioner "ansible" {
+  provisioner "ansible-local" {
     playbook_file = "../../playbooks/apache_start.yaml"
   }
 }
