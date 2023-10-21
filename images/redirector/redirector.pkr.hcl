@@ -1,22 +1,14 @@
-packer {
-  required_plugins {
-    amazon = {
-      source  = "github.com/hashicorp/amazon"
-      version = "~> 1"
-    }
-    ansible = {
-      source  = "github.com/hashicorp/ansible"
-      version = "~> 1.1.0"
-    }
-  }
-}
-
 # Build an Apache redirector
 source "amazon-ebs" "redirector" {
-  ami_name      = "apache-redirector"
-  instance_type = "t2.micro"
-  region        = "us-east-1"
-  ssh_username  = "ubuntu"
+  ami_name      = var.ami_name
+  instance_type = var.instance_type
+  region        = var.region
+  ssh_username  = var.ssh_username
+  vpc_id = var.vpc_id
+  subnet_id = var.subnet_id
+  ssh_agent_auth = var.ssh_agent_auth_enabled
+  temporary_key_pair_type = var.temporary_key_pair_type
+  associate_public_ip_address = var.associate_public_ip_address
 
   # AMI details
   source_ami_filter {
@@ -32,24 +24,29 @@ source "amazon-ebs" "redirector" {
 
   # EBS 
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
-    volume_size           = 32
-    volume_type           = "gp2"
-    delete_on_termination = true
+    device_name           = var.device_name
+    volume_size           = var.volume_size
+    volume_type           = var.volume_type
+    delete_on_termination = var.delete_on_termination
   }
 
-  vpc_filter {
-    filters = {
-      "isDefault" : "false",
-    }
-  }
+# If you do not have a VPC or Subnet ID, you can use these filters to assist in assignment
+#  vpc_filter {
+#    filters = {
+#      "isDefault" : "false",
+#    }
+#  }
 
-  subnet_filter {
-    filters = {
-      "state" : "available"
-    }
-    most_free = true
-    random    = false
+#  subnet_filter {
+#    filters = {
+#      "state" : "available"
+#    }
+#    most_free = true
+#    random    = false
+#  }
+
+  tags = {
+    Name = "Redirector"
   }
 }
 
@@ -58,13 +55,16 @@ build {
     "source.amazon-ebs.redirector"
   ]
 
-  provisioner "ansible" {
+  provisioner "shell" {
+    script = "../../scripts/user_data.sh"
+  }
+  provisioner "ansible-local" {
     playbook_file = "../../playbooks/apache_install.yaml"
   }
-  provisioner "shell" {
-    script = "../../scripts/apache_redirector.sh"
+  provisioner "ansible-local" {
+    playbook_file = "../../playbooks/apache_configure.yaml"
   }
-  provisioner "ansible" {
+  provisioner "ansible-local" {
     playbook_file = "../../playbooks/apache_start.yaml"
   }
 }

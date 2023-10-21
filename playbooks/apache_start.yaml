@@ -1,5 +1,6 @@
-- hosts: default
+- hosts: 127.0.0.1
   become: true
+  connection: local
 
   tasks:
     - name: Start Apache Service

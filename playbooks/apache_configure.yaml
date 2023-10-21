@@ -1,0 +1,46 @@
+---
+- name: Configure Apache Redirector
+  hosts: 127.0.0.1
+  become: yes
+
+  tasks:
+    - name: Set Apache AllowOverride to All
+      command: sed -i 's/AllowOverride none/AllowOverride All/' /etc/apache2/sites-available/default
+      ignore_errors: yes  # In case the sed command doesn't make any changes
+
+    - name: Enable Apache modules
+      command: a2enmod {{ item }}
+      with_items:
+        - rewrite
+        - headers
+        - proxy_http
+        - ssl
+        - cache
+      ignore_errors: yes  # In case the module is already enabled
+
+    - name: Enable SSL and proxy-related modules
+      command: a2enmod {{ item }}
+      with_items:
+        - ssl
+        - rewrite
+        - proxy
+        - proxy_http
+      ignore_errors: yes  # In case the module is already enabled
+
+    - name: Enable Apache site
+      command: a2ensite 000-default-le-ssl.conf
+      ignore_errors: yes  # In case the site is already enabled
+
+    - name: Disable the deflate module
+      command: a2dismod -f deflate
+      ignore_errors: yes  # In case the module is not enabled
+
+    - name: Re-enable Apache modules
+      command: a2enmod {{ item }}
+      with_items:
+        - rewrite
+        - headers
+        - proxy_http
+        - ssl
+        - cache
+      ignore_errors: yes  # In case the module is already enabled
