@@ -4,6 +4,8 @@
   <img alt="WolfPack" src="img/wolfpack.png" >
 </p>
 
+---
+
 WolfPack combines the capabilities of `Terraform` and `Packer` to streamline the deployment of red team redirectors on a large scale. This tool enables security professionals to efficiently scale out the creation and management of Apache redirectors, which mimic authentic websites. These redirectors act as a bridge, seamlessly redirecting incoming traffic to a controlled C2 infrastructure. WolfPack simplifies the process of setting up and configuring these deceptive elements, making it an invaluable asset for security testing and red teaming exercises.
 
 ## Installation:
@@ -62,6 +64,9 @@ $ packer build .
 ```
 
 This will deploy a custom redirector AMI within your AWS account EC2 services. 
+
+> [!NOTE]
+> This code is undergoing development, so if you encounter any errors or have any enhancement requests, feel free to create an issue on this repository 
 
 ## Future Development:
 
