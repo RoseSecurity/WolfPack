@@ -72,7 +72,8 @@ This will deploy a custom redirector AMI within your AWS account EC2 services.
 
 - [ ] Add Let's Encrypt functionality for certificates
 - [ ] Add Terraform for creation of VPC, subnets, and security groups
-- [ ] Add support for downloading custom website pages for deployment with Apache 
+- [ ] Add support for downloading custom website pages for deployment with Apache
+- [ ] Create Red Team C2 servers and collaboration suite
 
 
 ## References:
