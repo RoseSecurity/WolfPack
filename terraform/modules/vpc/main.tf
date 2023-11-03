@@ -1,75 +1,43 @@
-resource "aws_vpc" "vpc" {
-  cidr_block           = var.cidr_vpc
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+locals {
+  create_vpc = var.create_vpc && var.rosesecurity_rocks
+  tags       = merge(var.name, var.vpc_tags)
+  vpc_name   = "${var.name}-${module.vpc.name}"
+  sg_name    = "${var.name}-${module.sg.name}"
 }
 
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.vpc.id
+# Create VPC
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.1.2"
+
+  create_vpc = local.create_vpc ? 1 : 0
+  name       = local.vpc_name
+  cidr       = var.cidr
+
+  create_igw         = true
+  igw_tags           = local.tags
+  single_nat_gateway = true
+  public_subnets     = var.public_subnets
+  private_subnets    = var.private_subnets
+
+  enable_flow_log                      = true
+  create_flow_log_cloudwatch_log_group = true
+  create_flow_log_cloudwatch_iam_role  = true
+  flow_log_max_aggregation_interval    = 60
+
+  vpc_tags = local.tags
+  tags     = var.tags
 }
 
-resource "aws_subnet" "subnet_public" {
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = var.cidr_subnet
-}
+module "sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.1.0"
 
-resource "aws_route_table" "rtb_public" {
-  vpc_id = aws_vpc.vpc.id
+  name          = local.sg_name
+  description   = "Security group for ports open within VPC"
+  vpc_id        = module.vpc.vpc_id
+  ingress_rules = ["ssh", "http-80-tcp", "https-443-tcp"]
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw.id
-  }
-}
-
-resource "aws_route_table_association" "rta_subnet_public" {
-  subnet_id      = aws_subnet.subnet_public.id
-  route_table_id = aws_route_table.rtb_public.id
-}
-
-resource "aws_security_group" "sg_22_80" {
-  name   = "sg_22"
-  vpc_id = aws_vpc.vpc.id
-
-  # SSH access from the VPC
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_instance" "redirector" {
-  ami                         = var.ami_id
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.subnet_public.id
-  vpc_security_group_ids      = [aws_security_group.sg_22_80.id]
-  associate_public_ip_address = true
-
-  tags = {
-    Name      = "Red-Team"
-    ManagedBy = "Terraform"
-  }
+  # This can be scoped to target network
+  ingress_cidr_blocks = ["0.0.0.0/0"]
 }
