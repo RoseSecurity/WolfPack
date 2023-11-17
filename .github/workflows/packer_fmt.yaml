@@ -23,6 +23,7 @@ jobs:
         id: find-modified-hcl
         shell: bash
         run: |
+          set -x
           MODIFIED_FILES=($(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }}))
           [[ -n "$MODIFIED_FILES" ]] && MODIFIED_DIRS=($(xargs -n 1 dirname <<< "${MODIFIED_FILES[@]}" | sort | uniq)) || true
           [[ -n "$MODIFIED_DIRS" ]] && MODIFIED_HCL_DIRS=($(for f in "${MODIFIED_FILES[@]}"; do [[ "$f" == *.hcl ]] && dirname "$f" || true; done | sort | uniq)) || true
