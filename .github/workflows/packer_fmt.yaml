@@ -46,8 +46,6 @@ jobs:
     if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.run_fmt == 'true'
     strategy:
       fail-fast: false
-      hcl:
-        dir: ${{ fromJson(needs.find_hcl.outputs.hcl_dirs) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -60,5 +58,9 @@ jobs:
 
       - name: Run `packer init` and `packer fmt`
         id: packer-fmt
-        run: packer fmt
-        working_directory: ${{ hcl.dir }}
+        run: |
+          for dir in ${{ needs.find_hcl.outputs.hcl_dirs }}; do
+            pushd "$dir"
+            packer fmt .
+            popd
+          done
