@@ -23,9 +23,6 @@ jobs:
         id: find-modified-hcl
         shell: bash
         run: |
-          # mark the directory safe for git operations
-          make safe-directory
-
           MODIFIED_FILES=($(git diff --name-only origin/${BASE_REF} origin/${HEAD_REF}))
           [[ -n "$MODIFIED_FILES" ]] && MODIFIED_DIRS=($(xargs -n 1 dirname <<< "${MODIFIED_FILES[@]}" | sort | uniq)) || true
           [[ -n "$MODIFIED_DIRS" ]] && MODIFIED_HCL_DIRS=($(for f in "${MODIFIED_FILES[@]}"; do [[ "$f" == *.hcl ]] && dirname "$f" || true; done | sort | uniq)) || true
