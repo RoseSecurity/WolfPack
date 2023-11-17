@@ -6,6 +6,10 @@ on:
     paths:
       - '**/*'
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   PRODUCT_VERSION: "1.9.4"
 
@@ -62,7 +66,7 @@ jobs:
         with:
           version: ${{ env.PRODUCT_VERSION }}
 
-      - name: Run `packer init` and `packer fmt`
+      - name: Run `packer fmt`
         id: packer-fmt
         working_directory: ${{ fromJson(needs.find_hcl.outputs.hcl_dirs) }}
         run: packer fmt
