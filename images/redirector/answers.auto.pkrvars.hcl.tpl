@@ -1,11 +1,11 @@
 # DISCLAIMER:
-# See the variables.pkr.hcl file for a description of each of the variables.
+# See the variables.pkr.hcl file for a description of each variable.
 # Some variables are excluded intentionally, and care should be taken if
 # adjusting from the default.
 
 # HOW TO USE:
 # Uncomment the below for each variable you want to override after renaming
-# this file to answers.auto.pkrvars.hcl from answers.auto.pkrvars.hcl.tpl
+# this file from answers.auto.pkrvars.hcl.tpl to answers.auto.pkrvars.hcl
 
 #region                   = ""
 #vpc_id                   = ""
