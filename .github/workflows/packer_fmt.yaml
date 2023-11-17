@@ -49,6 +49,7 @@ jobs:
 
   packer:
     runs-on: ubuntu-latest
+    needs: find_hcl
     if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.run_fmt == 'true'
     strategy:
       fail-fast: false
@@ -64,7 +65,16 @@ jobs:
         with:
           version: ${{ env.PRODUCT_VERSION }}
 
-      - name: Run `packer fmt`
-        id: packer-fmt
-        working_directory: ${{ fromJson(needs.find_hcl.outputs.hcl_dirs) }}
-        run: packer fmt
+      - name: Set directories
+        id: set-dirs
+        run: |
+           echo "dirs<<EOF" >> $GITHUB_ENV
+           echo ${{needs.find_hcl.outputs.hcl_dirs}} >> $GITHUB_ENV
+           echo "EOF" >> $GITHUB_ENV
+
+      - name: Run packer fmt
+        run: |
+          for dir in ${{ env.dirs }}; do
+            cd $dir
+            packer fmt
+          done
