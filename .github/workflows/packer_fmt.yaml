@@ -18,12 +18,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Find modified HCL
         id: find-modified-hcl
-        shell: bash
+        shell: bash -x -e -o pipefail {0}
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
-          MODIFIED_FILES=($(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }}))
+          MODIFIED_FILES=($(git diff --name-only origin/${BASE_REF} origin/${HEAD_REF}))
           [[ -n "$MODIFIED_FILES" ]] && MODIFIED_DIRS=($(xargs -n 1 dirname <<< "${MODIFIED_FILES[@]}" | sort | uniq)) || true
           [[ -n "$MODIFIED_DIRS" ]] && MODIFIED_HCL_DIRS=($(for f in "${MODIFIED_FILES[@]}"; do [[ "$f" == *.hcl ]] && dirname "$f" || true; done | sort | uniq)) || true
 
@@ -47,6 +52,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
