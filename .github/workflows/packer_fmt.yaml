@@ -1,0 +1,47 @@
+name: Packer Format
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**/*'
+
+env:
+  PRODUCT_VERSION: "1.9.4"
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find modified HCL
+        id: find-modified-hcl
+        run: |
+          echo "Changed files:"
+          echo "::set-output name=files::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})"
+        shell: bash
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Run `packer init` and `packer fmt`
+        id: packer-fmt
+        run: |
+          modified_hcl="${{ steps.changed-files.outputs.files }}"
+          for file in $modified_hcl; do
+            if [[ "$file" == *".hcl" ]]; then
+              directory=$(dirname "$file")
+              cd "$directory"
+
+              packer init "$file"
+              packer fmt "$file"
+          
+              cd -
+            fi
+          done
