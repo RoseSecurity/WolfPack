@@ -65,7 +65,7 @@ jobs:
       - name: Run `packer init` and `packer fmt`
         id: packer-fmt
         run: |
-          for dir in ${{ needs.find_hcl.outputs.hcl_dirs }}; do
+          for dir in ${{ fromJson(needs.find_hcl.outputs.hcl_dirs) }}; do
             pushd "$dir"
             packer fmt .
             popd
