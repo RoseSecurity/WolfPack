@@ -34,13 +34,13 @@ jobs:
 
           if [[ -z "$MODIFIED_HCL_DIRS" ]]; then
             echo "No HCL files changed in this PR. Skipping Packer fmt."
-            echo "run_fmt=false" >> $GITHUB_ENV
-            echo "hcl_dirs=[]" >> $GITHUB_ENV
+            echo "run_fmt=false" >> $GITHUB_OUTPUT
+            echo "hcl_dirs=[]" >> $GITHUB_OUTPUT
           else
             echo "Running checks on the following Packer components:"
             printf -- "- %s\n" "${MODIFIED_HCL_DIRS[@]}"
-            echo "run_fmt=true" >> $GITHUB_ENV
-            echo "hcl_dirs=$(IFS=,; printf '["%s"]\n' "${MODIFIED_HCL_DIRS[*]}" | sed 's/,/", "/g')" >> $GITHUB_ENV
+            echo "run_fmt=true" >> $GITHUB_OUTPUT
+            echo "hcl_dirs=$(IFS=,; printf '["%s"]\n' "${MODIFIED_HCL_DIRS[*]}" | sed 's/,/", "/g')" >> $GITHUB_OUTPUT
           fi
 
   packer:
