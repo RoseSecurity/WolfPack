@@ -62,9 +62,9 @@ variable "associate_public_ip_address" {
 }
 
 variable "device_name" {
-  type = string
+  type        = string
   description = "The device name exposed to the instance"
-  default = "/dev/sda1"
+  default     = "/dev/sda1"
 }
 
 # Size of EBS volume in GB (number)

@@ -1,13 +1,13 @@
 # Build an Apache redirector
 source "amazon-ebs" "redirector" {
-  ami_name      = var.ami_name
-  instance_type = var.instance_type
-  region        = var.region
-  ssh_username  = var.ssh_username
-  vpc_id = var.vpc_id
-  subnet_id = var.subnet_id
-  ssh_agent_auth = var.ssh_agent_auth_enabled
-  temporary_key_pair_type = var.temporary_key_pair_type
+  ami_name                    = var.ami_name
+  instance_type               = var.instance_type
+  region                      = var.region
+  ssh_username                = var.ssh_username
+  vpc_id                      = var.vpc_id
+  subnet_id                   = var.subnet_id
+  ssh_agent_auth              = var.ssh_agent_auth_enabled
+  temporary_key_pair_type     = var.temporary_key_pair_type
   associate_public_ip_address = var.associate_public_ip_address
 
   # AMI details
@@ -30,20 +30,20 @@ source "amazon-ebs" "redirector" {
     delete_on_termination = var.delete_on_termination
   }
 
-# If you do not have a VPC or Subnet ID, you can use these filters to assist in assignment
-#  vpc_filter {
-#    filters = {
-#      "isDefault" : "false",
-#    }
-#  }
+  # If you do not have a VPC or Subnet ID, you can use these filters to assist in assignment
+  #  vpc_filter {
+  #    filters = {
+  #      "isDefault" : "false",
+  #    }
+  #  }
 
-#  subnet_filter {
-#    filters = {
-#      "state" : "available"
-#    }
-#    most_free = true
-#    random    = false
-#  }
+  #  subnet_filter {
+  #    filters = {
+  #      "state" : "available"
+  #    }
+  #    most_free = true
+  #    random    = false
+  #  }
 
   tags = {
     Name = "Redirector"

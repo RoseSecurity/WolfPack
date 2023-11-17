@@ -1,0 +1,26 @@
+name: Packer Format
+on:
+  push:
+env:
+  PRODUCT_VERSION: "1.9.4"
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Run `packer init`
+        id: init
+        run: "packer init ./images/redirector"
+
+      - name: Run `packer fmt`
+        id: fmt
+        run: "packer fmt ./images/redirector"
