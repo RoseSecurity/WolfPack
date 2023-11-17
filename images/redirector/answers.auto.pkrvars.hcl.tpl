@@ -1,5 +1,5 @@
 # DISCLAIMER:
-# See the variables.pkr.hcl file for a description of each of the variables.
+# See the variables.pkr.hcl file for a description of each variable.
 # Some variables are excluded intentionally, and care should be taken if
 # adjusting from the default.
 
