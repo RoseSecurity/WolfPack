@@ -1,4 +1,4 @@
-# Build an Apache redirector
+# Build an Apache mod_rewrite redirector
 source "amazon-ebs" "redirector" {
   ami_name                    = var.ami_name
   instance_type               = var.instance_type
