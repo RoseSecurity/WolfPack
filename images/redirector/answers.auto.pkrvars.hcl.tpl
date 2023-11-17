@@ -5,7 +5,7 @@
 
 # HOW TO USE:
 # Uncomment the below for each variable you want to override after renaming
-# this file to answers.auto.pkrvars.hcl from answers.auto.pkrvars.hcl.tpl
+# this file from answers.auto.pkrvars.hcl.tpl to answers.auto.pkrvars.hcl
 
 #region                   = ""
 #vpc_id                   = ""
