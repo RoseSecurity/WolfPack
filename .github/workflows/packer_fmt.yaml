@@ -1,5 +1,4 @@
 name: Packer Format
-
 on:
   pull_request:
     types: [opened, synchronize]
@@ -50,7 +49,6 @@ jobs:
 
   packer:
     runs-on: ubuntu-latest
-    needs: find_hcl
     if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.run_fmt == 'true'
     strategy:
       fail-fast: false
