@@ -22,7 +22,7 @@ source "amazon-ebs" "redirector" {
     owners      = ["099720109477"]
   }
 
-  # EBS 
+  # Storage
   launch_block_device_mappings {
     device_name           = var.device_name
     volume_size           = var.volume_size
