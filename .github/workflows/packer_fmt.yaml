@@ -21,7 +21,7 @@ jobs:
       hcl_dirs: ${{ steps.find-modified-hcl.outputs.hcl_dirs }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -43,8 +43,8 @@ jobs:
           else
             echo "Running checks on the following Packer components:"
             printf -- "- %s\n" "${MODIFIED_HCL_DIRS[@]}"
-            echo "hcl_dirs=$(IFS=,; printf '["%s"]\n' "${MODIFIED_HCL_DIRS[*]}" | sed 's/,/", "/g')" >> $GITHUB_OUTPUT
             echo "run_fmt=true" >> $GITHUB_OUTPUT
+            echo "hcl_dirs=$(IFS=,; printf '["%s"]\n' "${MODIFIED_HCL_DIRS[*]}" | sed 's/,/", "/g')" >> $GITHUB_OUTPUT
           fi
 
   packer:
@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
