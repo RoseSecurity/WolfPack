@@ -49,6 +49,7 @@ jobs:
 
   packer:
     runs-on: ubuntu-latest
+    needs: find_hcl
     if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.fmt_run == 'true'
 
     steps:
