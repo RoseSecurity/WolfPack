@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.state == 'open'
     outputs:
-      run_fmt: ${{ steps.find-modified-hcl.outputs.run_fmt }}
+      run_fmt: ${{ steps.find-modified-hcl.outputs.fmt_run }}
       hcl_dirs: ${{ steps.find-modified-hcl.outputs.hcl_dirs }}
     steps:
       - name: Checkout
@@ -43,15 +43,14 @@ jobs:
           else
             echo "Running checks on the following Packer components:"
             printf -- "- %s\n" "${MODIFIED_HCL_DIRS[@]}"
-            echo "run_fmt=true" >> $GITHUB_OUTPUT
+            echo "fmt_run=true" >> $GITHUB_OUTPUT
             echo "hcl_dirs=$(IFS=,; printf '["%s"]\n' "${MODIFIED_HCL_DIRS[*]}" | sed 's/,/", "/g')" >> $GITHUB_OUTPUT
           fi
 
   packer:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.run_fmt == 'true'
-    strategy:
-      fail-fast: false
+    if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.fmt_run == 'true'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
