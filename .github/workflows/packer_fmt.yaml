@@ -68,4 +68,4 @@ jobs:
       - name: Run `packer fmt`
         id: packer-fmt
         run: |
-          echo -e {{ needs.find_hcl.outputs.hcl_dirs }}
+          echo -e "${{ needs.find_hcl.outputs.hcl_dirs }}"
