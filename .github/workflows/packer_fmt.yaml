@@ -67,6 +67,7 @@ jobs:
       - name: Run `packer fmt`
         id: packer-fmt
         env:
-          dir: {{ fromJson(needs.find_hcl.outputs.hcl_dirs) }}
+          dir: { { fromJson(needs.find_hcl.outputs.hcl_dirs) } }
+        with:
+          working_directory: ${{ env.dir }}
         run: packer fmt
-        working_directory: ${{ env.dir }}
