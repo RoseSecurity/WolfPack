@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.state == 'open'
     outputs:
-      run_fmt: true
+      run_fmt: ${{ steps.find-modified-hcl.outputs.run_fmt }}
       hcl_dirs: ${{ steps.find-modified-hcl.outputs.hcl_dirs }}
     steps:
       - name: Checkout
@@ -49,7 +49,6 @@ jobs:
 
   packer:
     runs-on: ubuntu-latest
-    needs: find_hcl
     if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.run_fmt == 'true'
     strategy:
       fail-fast: false
