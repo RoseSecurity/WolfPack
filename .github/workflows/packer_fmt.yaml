@@ -68,7 +68,7 @@ jobs:
         id: packer-fmt
         run: |
           hcl_dirs="${{ needs.find_hcl.outputs.hcl_dirs }}"
-          for dir in hcl_dirs; do
+          for dir in $hcl_dirs; do
             cd $dir
             packer fmt .
           done
