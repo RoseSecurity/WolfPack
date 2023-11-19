@@ -63,11 +63,8 @@ jobs:
         id: setup
         with:
           version: ${{ env.PRODUCT_VERSION }}
+          working_directory: ${{ fromJson(needs.find_hcl.outputs.run_fmt) }}
 
       - name: Run `packer fmt`
         id: packer-fmt
-        env:
-          dir: ${{ fromJson(needs.find_hcl.outputs.hcl_dirs) }}
-        with:
-          working_directory: ${{ env.dir }}
         run: packer fmt
