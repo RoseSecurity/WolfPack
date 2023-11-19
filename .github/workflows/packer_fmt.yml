@@ -1,0 +1,69 @@
+name: Packer Format
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**/*'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  PRODUCT_VERSION: "1.9.4"
+
+jobs:
+  find_hcl:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.state == 'open'
+    outputs:
+      run_fmt: ${{ steps.find-modified-hcl.outputs.fmt_run }}
+      hcl_dirs: ${{ steps.find-modified-hcl.outputs.hcl_dirs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find modified HCL
+        id: find-modified-hcl
+        shell: bash -x -e -o pipefail {0}
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          MODIFIED_FILES=($(git diff --name-only origin/${BASE_REF} origin/${HEAD_REF}))
+          [[ -n "$MODIFIED_FILES" ]] && MODIFIED_DIRS=($(xargs -n 1 dirname <<< "${MODIFIED_FILES[@]}" | sort | uniq)) || true
+          [[ -n "$MODIFIED_DIRS" ]] && MODIFIED_HCL_DIRS=($(for f in "${MODIFIED_FILES[@]}"; do [[ "$f" == *.hcl ]] && dirname "$f" || true; done | sort | uniq)) || true
+
+          if [[ -z "$MODIFIED_HCL_DIRS" ]]; then
+            echo "No HCL files changed in this PR. Skipping Packer fmt."
+            echo "run_fmt=false" >> $GITHUB_OUTPUT
+            echo "hcl_dirs=[]" >> $GITHUB_OUTPUT
+          else
+            echo "Running checks on the following Packer components:"
+            printf -- "- %s\n" "${MODIFIED_HCL_DIRS[@]}"
+            echo "fmt_run=true" >> $GITHUB_OUTPUT
+            echo "hcl_dirs=$(IFS=,; printf '["%s"]\n' "${MODIFIED_HCL_DIRS[*]}" | sed 's/,/", "/g')" >> $GITHUB_OUTPUT
+          fi
+
+  packer:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.state == 'open' && needs.find_hcl.outputs.fmt_run == 'true'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Run `packer fmt`
+        id: packer-fmt
+        run: |
+          echo -e "${{ needs.find_hcl.outputs.hcl_dirs }}"
