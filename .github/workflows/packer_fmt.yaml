@@ -21,7 +21,7 @@ jobs:
       hcl_dirs: ${{ steps.find-modified-hcl.outputs.hcl_dirs }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
