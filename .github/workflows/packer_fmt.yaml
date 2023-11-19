@@ -67,4 +67,4 @@ jobs:
 
       - name: Run `packer fmt`
         id: packer-fmt
-        run: packer fmt
+        run: packer fmt .
