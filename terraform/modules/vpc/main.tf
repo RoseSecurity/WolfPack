@@ -8,7 +8,7 @@ locals {
 # Create VPC
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.5.0"
+  version = "5.5.1"
 
   create_vpc = local.create_vpc ? 1 : 0
   name       = local.vpc_name
