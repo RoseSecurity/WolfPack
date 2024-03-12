@@ -31,7 +31,7 @@ module "vpc" {
 
 module "sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "5.1.0"
+  version = "5.1.2"
 
   name          = local.sg_name
   description   = "Security group for ports open within VPC"
