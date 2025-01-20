@@ -1,24 +1,38 @@
 #!/usr/bin/env bash
 
-set -x
+set -euo pipefail
 
-# Install necessary dependencies
+# Update package list and install necessary dependencies
 sudo apt-get update -y
-sudo apt-get -y -qq install curl wget git vim apt-transport-https ca-certificates software-properties-common
+sudo apt-get install -y \
+    curl \
+    wget \
+    git \
+    vim \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common
 
-# Add Ansible repository
+# Add Ansible repository and install Ansible
 sudo apt-add-repository --yes --update ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install -y ansible
 
 # Create the 'operators' group (if it doesn't already exist)
-sudo groupadd -r operators
+if ! getent group operators > /dev/null; then
+    sudo groupadd -r operators
+fi
 
 # Create the 'operator' user and add it to the 'operators' group
-sudo useradd -m -s /bin/bash -g operators operator
+if ! id -u operator > /dev/null 2>&1; then
+    sudo useradd -m -s /bin/bash -g operators operator
+fi
 
-# Copy the sudoers file for backup
+# Backup the sudoers file
 sudo cp /etc/sudoers /etc/sudoers.orig
 
 # Add the 'operator' user to the sudoers file
-echo "operator  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/operator
+echo "operator  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/operator > /dev/null
+
+# Ensure the correct permissions for the sudoers file
+sudo chmod 0440 /etc/sudoers.d/operator
