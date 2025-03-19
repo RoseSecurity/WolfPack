@@ -43,3 +43,8 @@ module "sg" {
   ingress_cidr_blocks = ["0.0.0.0/0"]
 }
 
+
+locals {
+  list  = [{ a = "b" }, { a = "c" }]
+  value = list.*.a
+}
