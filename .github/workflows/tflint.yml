@@ -9,7 +9,7 @@
       runs-on: ubuntu-latest
       steps:
         - name: tflint
-          uses: The-Infra-Company/github-action-tflint-upload@main
+          uses: The-Infra-Company/github-action-tflint-upload@8baa08e249e702700b14d35b48a7b589edd5a4a9
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             working_directory: "terraform"
