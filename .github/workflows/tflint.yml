@@ -1,16 +1,31 @@
-  name: Pull Request
-  on:
-    pull_request:
-      branches: [ 'main' ]
-      types: [opened, synchronize, reopened, closed, labeled, unlabeled]
+name: TFLint
 
-  jobs:
-    context:
-      runs-on: ubuntu-latest
-      steps:
-        - name: tflint
-          uses: The-Infra-Company/github-action-tflint-upload@8baa08e249e702700b14d35b48a7b589edd5a4a9
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            working_directory: "terraform"
-            tflint_rulesets: "aws"
+on:
+  pull_request:
+    branches: [ 'main' ]
+    types: [ opened, synchronize, reopened, closed, labeled, unlabeled ]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v4  # Using latest stable v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3  # Ensures Terraform is installed
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform  # Ensure we run init inside the Terraform directory
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: terraform  # Run validation to check for syntax errors
+
+      - name: Run TFLint
+        uses: The-Infra-Company/github-action-tflint-upload@8baa08e249e702700b14d35b48a7b589edd5a4a9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          working_directory: "terraform"
+          tflint_rulesets: "aws"
