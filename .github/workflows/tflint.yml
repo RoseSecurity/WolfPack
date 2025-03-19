@@ -20,7 +20,7 @@ jobs:
         working-directory: terraform  # Ensure we run init inside the Terraform directory
 
       - name: Run TFLint
-        uses: The-Infra-Company/github-action-tflint-upload@ec16695f96c44ddbd63315e52fa8cdbe2bd4bc59
+        uses: The-Infra-Company/github-action-tflint-upload@450f7223bd77e6150d826191b21a99f908dfd639
         env:
           ACTIONS_STEP_DEBUG: true
         with:
