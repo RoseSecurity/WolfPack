@@ -1,0 +1,16 @@
+  name: Pull Request
+  on:
+    pull_request:
+      branches: [ 'main' ]
+      types: [opened, synchronize, reopened, closed, labeled, unlabeled]
+
+  jobs:
+    context:
+      runs-on: ubuntu-latest
+      steps:
+        - name: tflint
+          uses: The-Infra-Company/github-action-tflint-upload@main
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            working_directory: "terraform"
+            tflint_rulesets: "aws"
