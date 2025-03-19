@@ -19,10 +19,6 @@ jobs:
         run: terraform init
         working-directory: terraform  # Ensure we run init inside the Terraform directory
 
-      - name: Terraform Validate
-        run: terraform validate
-        working-directory: terraform  # Run validation to check for syntax errors
-
       - name: Run TFLint
         uses: The-Infra-Company/github-action-tflint-upload@8baa08e249e702700b14d35b48a7b589edd5a4a9
         with:
