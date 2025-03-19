@@ -26,4 +26,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           working_directory: "terraform"
+          tflint_target_dir: "terraform/aws/vpc"
           tflint_rulesets: "aws"
