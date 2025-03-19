@@ -29,6 +29,7 @@ module "vpc" {
   tags     = var.tags
 }
 
+# Allow HTTP, HTTPS, SSH traffic
 module "sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.1.2"
@@ -41,3 +42,4 @@ module "sg" {
   # This can be scoped to target network
   ingress_cidr_blocks = ["0.0.0.0/0"]
 }
+
