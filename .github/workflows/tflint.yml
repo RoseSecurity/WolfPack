@@ -20,11 +20,10 @@ jobs:
         working-directory: terraform  # Ensure we run init inside the Terraform directory
 
       - name: Run TFLint
-        uses: The-Infra-Company/github-action-tflint-upload@89499056ffd20f471a147c344edc83589a51f2c8 # 0.2.0
+        uses: The-Infra-Company/github-action-tflint-upload@827c262288fa221a03ba4afdbfe80c75023a67a5 # 0.2.0
         env:
           ACTIONS_STEP_DEBUG: true
         with:
-          tflint_version: "v0.49.0" # TFLint added a "Bug Fix" with v0.50.0 that added .tflint.hcl as a requirement
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          working_directory: "terraform/modules/vpc"
+          working_directory: "terraform"
           tflint_rulesets: "aws"
