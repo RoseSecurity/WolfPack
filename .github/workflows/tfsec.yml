@@ -20,7 +20,7 @@ jobs:
         working-directory: "terraform/modules/vpc"
 
       - name: Run tfsec
-        uses: The-Infra-Company/github-action-tfsec-upload@v0.1.0
+        uses: The-Infra-Company/github-action-tfsec-upload@6748bf6d85b1371fca550537ab982025a640cfe0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           working_directory: "terraform/modules/vpc"
