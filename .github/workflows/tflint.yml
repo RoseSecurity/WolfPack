@@ -20,7 +20,7 @@ jobs:
         working-directory: "terraform/modules/vpc"  # Ensure we run init inside the Terraform directory
 
       - name: Run TFLint
-        uses: The-Infra-Company/github-action-tflint-upload@c0a40d10d00132f26059a64e728c7ebb45a44dcc
+        uses: The-Infra-Company/github-action-tflint-upload@355a821c92862d37cb3d3598521db969d654488f
         env:
           DEBUG_MODE: "true"
         with:
