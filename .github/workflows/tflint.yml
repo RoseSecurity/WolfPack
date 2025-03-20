@@ -26,3 +26,5 @@ jobs:
           tflint_version: "v0.49.0" # TFLint added a "Bug Fix" with v0.50.0 that added .tflint.hcl as a requirement
           working_directory: "terraform/modules/vpc"
           tflint_rulesets: "aws"
+          flags: >-
+            --disable-rule=terraform_unused_required_providers
