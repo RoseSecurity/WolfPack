@@ -25,5 +25,5 @@ jobs:
           ACTIONS_STEP_DEBUG: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tflint_target_dir: "terraform/modules/vpc"
+          working_directory: "terraform/modules/vpc"
           tflint_rulesets: "aws"
