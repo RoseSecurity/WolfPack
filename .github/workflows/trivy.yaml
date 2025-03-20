@@ -1,0 +1,28 @@
+name: Trivy
+
+on:
+  pull_request:
+    branches: [ 'main' ]
+    types: [ opened, synchronize, reopened, closed, labeled, unlabeled ]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: "terraform/modules/vpc"
+
+      - name: Run Trivy
+        uses: The-Infra-Company/github-action-trivy-upload@migrate-to-trivy # Adjust after merge
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          working_directory: "terraform/modules/vpc"
+          trivy_command: "config"
+
