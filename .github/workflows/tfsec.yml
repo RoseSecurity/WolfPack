@@ -1,4 +1,4 @@
-name: TFLint
+name: tfsec
 
 on:
   pull_request:
@@ -19,15 +19,10 @@ jobs:
         run: terraform init
         working-directory: "terraform/modules/vpc"
 
-      - name: Run TFLint
-        uses: The-Infra-Company/github-action-tflint-upload@a742d2ea7d35dc6a3cc8e929daf199f5e9a848ae # v0.2.0
-        env:
-          DEBUG_MODE: "true"
+      - name: Run tfsec
+        uses: The-Infra-Company/github-action-tfsec-upload@v0.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tflint_version: "v0.49.0" # TFLint added a "Bug Fix" with v0.50.0 that added .tflint.hcl as a requirement
           working_directory: "terraform/modules/vpc"
-          tflint_rulesets: "aws"
-          flags: >-
-            --disable-rule=terraform_unused_required_providers
-            --disable-rule=terraform_deprecated_index
+          tfsec_flags: "--exclude aws-iam-no-policy-wildcards"
+
