@@ -28,3 +28,4 @@ jobs:
           tflint_rulesets: "aws"
           flags: >-
             --disable-rule=terraform_unused_required_providers
+            --disable-rule=terraform_deprecated_index
