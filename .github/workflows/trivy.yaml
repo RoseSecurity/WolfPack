@@ -21,6 +21,8 @@ jobs:
 
       - name: Run Trivy
         uses: The-Infra-Company/github-action-tfsec-upload@migrate-to-trivy # Adjust after merge
+        env:
+          DEBUG_MODE: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           working_directory: "terraform/modules/vpc"
