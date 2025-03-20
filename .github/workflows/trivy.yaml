@@ -20,7 +20,7 @@ jobs:
         working-directory: "terraform/modules/vpc"
 
       - name: Run Trivy
-        uses: The-Infra-Company/github-action-trivy-upload@migrate-to-trivy # Adjust after merge
+        uses: The-Infra-Company/github-action-trivy-upload@c367ba318b1787887c4d59188244b4f666bca6a4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           working_directory: "terraform/modules/vpc"
