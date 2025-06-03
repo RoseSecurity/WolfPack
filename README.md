@@ -18,9 +18,9 @@ git clone https://github.com/RoseSecurity-Research/WolfPack.git
 
 Ensure that you have downloaded [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/) before continuing! This can be simply done using the following methods:
 
-### Packer & Terraform Download Methods (MacOS): 
+### Packer & Terraform Download Methods (MacOS):
 
-1.) Install Homebrew by entering this command into your terminal application: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`. Then install both packer and terraform via brew: 
+1.) Install Homebrew by entering this command into your terminal application: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`. Then install both packer and terraform via brew:
 
 ```Bash
 $ brew tap hashicorp/tap && brew update
@@ -47,7 +47,7 @@ Locate the following lines and replace them with the `User-Agent` and IP address
           RewriteEngine On
           RewriteCond %{REQUEST_METHOD} ^(GET|POST) [NC]
           RewriteCond %{REQUEST_URI} ^/api/v1/2023/(.*)$
-          
+
           # Change the following to the User-Agent for callbacks
           RewriteCond %{HTTP_USER_AGENT} "Mozilla/5.0 \(Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \(KHTML, like Gecko\) Chrome/113.0.0.0 Safari/537.36"
 
@@ -63,10 +63,14 @@ $ packer init
 $ packer build .
 ```
 
-This will deploy a custom redirector AMI within your AWS account EC2 services. 
+This will deploy a custom redirector AMI within your AWS account EC2 services.
 
 > [!NOTE]
-> This code is undergoing development, so if you encounter any errors or have any enhancement requests, feel free to create an issue on this repository 
+> This code is undergoing development, so if you encounter any errors or have any enhancement requests, feel free to create an issue on this repository
+
+<!-- TERRAFETCH:START -->
+
+<!-- TERRAFETCH:END -->
 
 ## Future Development:
 
