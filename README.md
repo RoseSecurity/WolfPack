@@ -69,7 +69,34 @@ This will deploy a custom redirector AMI within your AWS account EC2 services.
 > This code is undergoing development, so if you encounter any errors or have any enhancement requests, feel free to create an issue on this repository
 
 <!-- TERRAFETCH:START -->
+<details><summary>Terrafetch</summary>
 
+```console
+╭──────────────────────────────────────────────────────────────╮
+│                                    .                         │
+│@#                                  -                         │
+│@@@@@                               Terraform Files:     4    │
+│@@@@@@@@.                           Documentation:       1    │
+│@@@@@@@@@@ +                   #    Providers:           1    │
+│@@@@@@@@@@ @@@@             @@@@    Module Calls:        2    │
+│@@@@@@@@@@ @@@@@@@.     .@@@@@@@    Resources:           0    │
+│ @@@@@@@@@ @@@@@@@@@@ @@@@@@@@@@    Data Sources:        0    │
+│    +@@@@@ @@@@@@@@@@ @@@@@@@@@@    Variables:           9    │
+│       .@@ @@@@@@@@@@ @@@@@@@@@@    Sensitive Variables: 0    │
+│           @@@@@@@@@@ @@@@@@@@@@    Outputs:             2    │
+│           @+ -@@@@@@ @@@@@@=       Sensitive Outputs:   0    │
+│           @@@@@ .@@@ @@@.                                    │
+│           @@@@@@@@.                                          │
+│           @@@@@@@@@@                                         │
+│           @@@@@@@@@@                                         │
+│           @@@@@@@@@@                                         │
+│            .@@@@@@@@                                         │
+│                @@@@@                                         │
+│                   %@                                         │
+│                                                              │
+╰──────────────────────────────────────────────────────────────╯
+```
+</details>
 <!-- TERRAFETCH:END -->
 
 ## Future Development:
