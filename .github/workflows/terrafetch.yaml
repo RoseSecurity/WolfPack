@@ -21,4 +21,5 @@ jobs:
         uses: RoseSecurity/terrafetch@v0.3.0
         with:
           output_file: README.md      # file with the START/END markers
+          collapse_output: false
           terrafetch_version: "latest"
