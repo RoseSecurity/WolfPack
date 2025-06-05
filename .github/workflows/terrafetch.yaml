@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Generate README stats with Terrafetch
-        uses: RoseSecurity/terrafetch@v0.3.0
+        uses: RoseSecurity/terrafetch@v0.3.1
         with:
           output_file: README.md      # file with the START/END markers
           collapse_output: false
